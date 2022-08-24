@@ -3,12 +3,15 @@ package main
 import (
 	"template/internal/http_router"
 	"template/internal/models"
+	"template/pgk/memcache"
 	"template/pgk/settings"
 )
 
 func init() {
 	settings.Parse()
 	models.Connect()
+
+	go memcache.KeyCache.Fetch()
 }
 
 func main() {

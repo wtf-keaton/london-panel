@@ -21,7 +21,8 @@ func Connect() {
 func makeMigrations() {
 	err := DB.AutoMigrate(
 		&UserModel{},
-		&ConfigModel{},
+		&KeyModel{},
+		&LogModel{},
 	)
 
 	if err != nil {
