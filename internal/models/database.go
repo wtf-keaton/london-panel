@@ -23,6 +23,8 @@ func makeMigrations() {
 		&UserModel{},
 		&KeyModel{},
 		&LogModel{},
+		&CheatModel{},
+		&BannedHardware{},
 	)
 
 	if err != nil {

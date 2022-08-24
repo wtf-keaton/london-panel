@@ -40,6 +40,8 @@ func GenerateKeys(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{"Status": "Error"})
 	}
 
+	go memcache.KeyCache.Fetch()
+
 	return c.JSON(fiber.Map{"Status": "OK"})
 }
 
@@ -58,6 +60,8 @@ func ClearKeyHardwareID(c *fiber.Ctx) error {
 		"HardwareID": "",
 	})
 
+	go memcache.KeyCache.Fetch()
+
 	return c.JSON(fiber.Map{"Status": "OK"})
 }
 
@@ -73,6 +77,8 @@ func DeleteKey(c *fiber.Ctx) error {
 	}
 
 	models.DB.Delete(&key)
+
+	go memcache.KeyCache.Fetch()
 
 	return c.JSON(fiber.Map{"Status": "OK"})
 }

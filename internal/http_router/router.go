@@ -21,5 +21,12 @@ func Serve() (app *fiber.App) {
 	app.Post("/admin/clearKeyHardware", admin.ClearKeyHardwareID)
 	app.Post("/admin/deleteKey", admin.DeleteKey)
 
+	app.Post("/admin/createCheat", admin.CreateCheat)
+	app.Post("/admin/changeCheatStatus", admin.ChangeCheatStatus)
+	app.Post("/admin/deleteCheat", admin.DeleteCheat)
+
+	app.Post("/admin/banHardware", admin.BanHardware)
+	app.Post("/admin/unbanHardware", admin.UnbanHardware)
+
 	return
 }
