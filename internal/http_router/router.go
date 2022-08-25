@@ -28,5 +28,8 @@ func Serve() (app *fiber.App) {
 	app.Post("/admin/banHardware", admin.BanHardware)
 	app.Post("/admin/unbanHardware", admin.UnbanHardware)
 
+	app.Post("/admin/createUser", admin.CreateUser)
+	app.Post("/admin/deleteUser", admin.DeleteUser)
+
 	return
 }
