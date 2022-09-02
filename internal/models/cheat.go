@@ -13,4 +13,5 @@ type CheatModel struct {
 	// Developer settings
 	Filename string
 	Process  string
+	Anticheat string
 }
