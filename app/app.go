@@ -12,6 +12,9 @@ func init() {
 	models.Connect()
 
 	go memcache.KeyCache.Fetch()
+	go memcache.UserCache.Fetch()
+	go memcache.CheatCache.Fetch()
+	go memcache.BannedCache.Fetch()
 }
 
 func main() {

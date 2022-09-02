@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Login</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500" rel="stylesheet" />
+
+    <link href="assets/styles.css" rel="stylesheet" />
+</head>
+<body class="bg-primary">
+<div id="layoutAuthentication">
+    <div id="layoutAuthentication_content">
+        <main>
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-xxl-4 col-xl-5 col-lg-6 col-md-8">
+                        <div class="card card-raised shadow-10 mt-5 mt-xl-10 mb-4">
+                            <div class="card-body p-5">
+                                <div class="text-center">
+                                    <img class="mb-3" src="https://material-admin-pro.startbootstrap.com/assets/img/icons/background.svg" alt="..." style="height: 48px">
+                                    <h1 class="display-5 mb-0">Login</h1>
+                                    <div class="subheading-1 mb-5">to continue</div>
+                                </div>
+                                <form method="post" action="/auth/login">
+                                    <div class="mb-4">
+                                        <label class="form-label" for="Username">Username</label>
+                                        <input class="form-control" id="Username" name="Username">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label class="form-label" for="Password">Password</label>
+                                        <input class="form-control" id="Password" name="Password">
+                                    </div>
+                                    <div class="form-group d-flex align-items-center justify-content-between mt-4 mb-0">
+                                        <button class="btn btn-primary" type="submit">Login</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script type="module" src="assets/material.js"></script>
+<script src="assets/scripts.js"></script>
+
+</body>
+</html>

@@ -5,6 +5,8 @@ import (
 	"github.com/gofiber/template/html"
 	"template/internal/http_router/admin"
 	"template/internal/http_router/index"
+	"template/internal/http_router/middleware"
+	"template/pgk/session_manager"
 )
 
 func Serve() (app *fiber.App) {
@@ -15,21 +17,30 @@ func Serve() (app *fiber.App) {
 
 	app.Static("/assets", "./ui/assets")
 
-	app.Get("/", index.Homepage)
+	app.Use(func(c *fiber.Ctx) error {
+		c.Bind(fiber.Map{
+			"Authorized": session_manager.IsAuthorized(c),
+			"User":       session_manager.GetUser(c),
+		})
+		return c.Next()
+	})
 
-	app.Post("/admin/generateKeys", admin.GenerateKeys)
-	app.Post("/admin/clearKeyHardware", admin.ClearKeyHardwareID)
-	app.Post("/admin/deleteKey", admin.DeleteKey)
+	app.Get("/", index.AuthPage)
+	app.Post("/auth/login", admin.LoginIn)
 
-	app.Post("/admin/createCheat", admin.CreateCheat)
-	app.Post("/admin/changeCheatStatus", admin.ChangeCheatStatus)
-	app.Post("/admin/deleteCheat", admin.DeleteCheat)
+	mainGroup := app.Group("/admin", middleware.AuthCheck)
+	mainGroup.Get("/", admin.Homepage)
 
-	app.Post("/admin/banHardware", admin.BanHardware)
-	app.Post("/admin/unbanHardware", admin.UnbanHardware)
-
-	app.Post("/admin/createUser", admin.CreateUser)
-	app.Post("/admin/deleteUser", admin.DeleteUser)
+	mainGroup.Post("/generateKeys", admin.GenerateKeys)
+	mainGroup.Post("/clearKeyHardware", admin.ClearKeyHardwareID)
+	mainGroup.Post("/deleteKey", admin.DeleteKey)
+	mainGroup.Post("/createCheat", admin.CreateCheat)
+	mainGroup.Post("/changeCheatStatus", admin.ChangeCheatStatus)
+	mainGroup.Post("/deleteCheat", admin.DeleteCheat)
+	mainGroup.Post("/banHardware", admin.BanHardware)
+	mainGroup.Post("/unbanHardware", admin.UnbanHardware)
+	mainGroup.Post("/createUser", admin.CreateUser)
+	mainGroup.Post("/deleteUser", admin.DeleteUser)
 
 	return
 }
