@@ -31,9 +31,9 @@ func ChangeCheatStatus(c *fiber.Ctx) error {
 	cheatModel := memcache.CheatCache.Get(cheat)
 
 	if cheatModel.Status == 1 {
-		models.DB.Debug().Model(&cheatModel).Update("Status", 0)
+		models.DB.Model(&cheatModel).Update("Status", 0)
 	} else if cheatModel.Status == 0 {
-		models.DB.Debug().Model(&cheatModel).Update("Status", 1)
+		models.DB.Model(&cheatModel).Update("Status", 1)
 	}
 
 	memcache.CheatCache.Fetch()

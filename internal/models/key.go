@@ -10,8 +10,9 @@ type KeyModel struct {
 
 	// Basic Information
 	Keycode    string `gorm:"unique"`
+	Cheat      string
 	Status     int
-	HardwareID int
+	HardwareID string
 
 	// Time Management
 	Hours   int
