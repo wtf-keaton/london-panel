@@ -8,11 +8,12 @@ import (
 
 func CreateCheat(c *fiber.Ctx) error {
 	err := models.DB.Create(&models.CheatModel{
-		Name:     c.FormValue("name"),
-		Status:   0,
-		Creator:  c.FormValue("creator"),
-		Filename: c.FormValue("filename"),
-		Process:  c.FormValue("process"),
+		Name:      c.FormValue("name"),
+		Status:    0,
+		Creator:   c.FormValue("creator"),
+		Filename:  c.FormValue("filename"),
+		Process:   c.FormValue("process"),
+		Anticheat: c.FormValue("anticheat"),
 	}).Error
 
 	if err != nil {
@@ -21,43 +22,32 @@ func CreateCheat(c *fiber.Ctx) error {
 
 	go memcache.CheatCache.Fetch()
 
-	return c.JSON(fiber.Map{"Status": "OK"})
+	return c.Redirect("/admin/cheats")
 }
 
 func ChangeCheatStatus(c *fiber.Ctx) error {
-	cheat := c.FormValue("cheat")
-	if len(cheat) == 0 {
-		return c.JSON(fiber.Map{"Status": "Error"})
-	}
+	cheat := c.Params("cheat")
 
 	cheatModel := memcache.CheatCache.Get(cheat)
-	if cheatModel.Name != cheat {
-		return c.JSON(fiber.Map{"Status": "Error"})
+
+	if cheatModel.Status == 1 {
+		models.DB.Debug().Model(&cheatModel).Update("Status", 0)
+	} else if cheatModel.Status == 0 {
+		models.DB.Debug().Model(&cheatModel).Update("Status", 1)
 	}
 
-	if cheatModel.Status == 0 {
-		models.DB.Model(&cheatModel).Updates(map[string]interface{}{"Status": "0"})
-	} else {
-		models.DB.Model(&cheatModel).Updates(map[string]interface{}{"Status": "1"})
-	}
+	memcache.CheatCache.Fetch()
 
-	go memcache.CheatCache.Fetch()
-
-	return c.JSON(fiber.Map{"Status": "OK"})
+	return c.Redirect("/admin/cheats")
 }
 
 func DeleteCheat(c *fiber.Ctx) error {
-	cheat := c.FormValue("cheat")
-	if len(cheat) == 0 {
-		return c.JSON(fiber.Map{"Status": "Error"})
-	}
+	cheat := c.Params("cheat")
 
 	cheatModel := memcache.CheatCache.Get(cheat)
-	if cheatModel.Name != cheat {
-		return c.JSON(fiber.Map{"Status": "Error"})
-	}
-
 	models.DB.Delete(&cheatModel)
 
-	return c.JSON(fiber.Map{"Status": "OK"})
+	memcache.CheatCache.Fetch()
+
+	return c.Redirect("/admin/cheats")
 }

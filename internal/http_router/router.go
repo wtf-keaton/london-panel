@@ -30,13 +30,17 @@ func Serve() (app *fiber.App) {
 
 	mainGroup := app.Group("/admin", middleware.AuthCheck)
 	mainGroup.Get("/", admin.Homepage)
+	mainGroup.Get("/users", admin.Users)
+	mainGroup.Get("/cheats", admin.Cheats)
 
 	mainGroup.Post("/generateKeys", admin.GenerateKeys)
 	mainGroup.Post("/clearKeyHardware", admin.ClearKeyHardwareID)
 	mainGroup.Post("/deleteKey", admin.DeleteKey)
 	mainGroup.Post("/createCheat", admin.CreateCheat)
-	mainGroup.Post("/changeCheatStatus", admin.ChangeCheatStatus)
-	mainGroup.Post("/deleteCheat", admin.DeleteCheat)
+
+	mainGroup.Get("/changeCheatStatus/:cheat", admin.ChangeCheatStatus)
+	mainGroup.Get("/deleteCheat/:cheat", admin.DeleteCheat)
+
 	mainGroup.Post("/banHardware", admin.BanHardware)
 	mainGroup.Post("/unbanHardware", admin.UnbanHardware)
 	mainGroup.Post("/createUser", admin.CreateUser)

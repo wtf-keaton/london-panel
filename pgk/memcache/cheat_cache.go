@@ -6,7 +6,7 @@ type cheatModelCache []models.CheatModel
 
 var CheatCache cheatModelCache
 
-func (c cheatModelCache) Fetch() {
+func (c *cheatModelCache) Fetch() {
 	models.DB.Find(&c)
 }
 

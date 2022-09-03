@@ -6,7 +6,7 @@ type keyModelCache []models.KeyModel
 
 var KeyCache keyModelCache
 
-func (c keyModelCache) Fetch() {
+func (c *keyModelCache) Fetch() {
 	models.DB.Find(&c)
 }
 

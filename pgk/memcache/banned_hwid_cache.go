@@ -6,7 +6,7 @@ type bannedHardwareModelCache []models.BannedHardware
 
 var BannedCache bannedHardwareModelCache
 
-func (c bannedHardwareModelCache) Fetch() {
+func (c *bannedHardwareModelCache) Fetch() {
 	models.DB.Find(&c)
 }
 
