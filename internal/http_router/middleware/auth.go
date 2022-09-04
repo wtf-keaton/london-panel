@@ -6,13 +6,9 @@ import (
 )
 
 func AuthCheck(c *fiber.Ctx) error {
-	if session_manager.IsAuthorized(c) == true {
+	if session_manager.IsAuthorized(c) == true && session_manager.GetUser(c).Username != "" {
 		return c.Next()
 	}
-
-	if session_manager.GetUser(c).Username == "" {
-		return c.Redirect("/")
-	}
-
+	
 	return c.Render("auth", fiber.Map{})
 }
