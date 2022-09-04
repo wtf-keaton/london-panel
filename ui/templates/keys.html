@@ -143,6 +143,9 @@
                                         <th data-sortable="" style="width: 10%;">
                                             <a href="#" class="dataTable-sorter">Cheat</a>
                                         </th>
+                                        <th data-sortable="" style="width: 5%;">
+                                            <a href="#" class="dataTable-sorter">Days</a>
+                                        </th>
                                         <th data-sortable="" style="width: 15%;">
                                             <a href="#" class="dataTable-sorter">Status</a>
                                         </th>
@@ -159,6 +162,7 @@
                                     <tr>
                                         <td>{{.Keycode}}</td>
                                         <td>{{.Cheat}}</td>
+                                        <td>{{.Hours}}</td>
                                         <td>
                                             {{ if eq .Status 0 }}
                                                 Inactive
