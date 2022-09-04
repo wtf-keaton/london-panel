@@ -47,8 +47,9 @@ func Serve() (app *fiber.App) {
 
 	apiGroup := app.Group("/api/v1")
 	apiGroup.Post("/getFile", api.GetCheatFile)
-	apiGroup.Post("/keyInformation", api.KeyInformation)
+	apiGroup.Post("/activateKey", api.ActivateKey)
 	apiGroup.Post("/banHardware", api.BanHardware)
+	apiGroup.Post("/keyInformation", api.KeyInformation)
 
 	return
 }
