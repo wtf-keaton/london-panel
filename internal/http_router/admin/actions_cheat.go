@@ -2,6 +2,7 @@ package admin
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"strconv"
 	"template/internal/models"
 	"template/pgk/memcache"
 )
@@ -28,7 +29,8 @@ func CreateCheat(c *fiber.Ctx) error {
 func ChangeCheatStatus(c *fiber.Ctx) error {
 	cheat := c.Params("cheat")
 
-	cheatModel := memcache.CheatCache.Get(cheat)
+	id, _ := strconv.Atoi(cheat)
+	cheatModel := memcache.CheatCache.ID(uint(id))
 
 	if cheatModel.Status == 1 {
 		models.DB.Model(&cheatModel).Update("Status", 0)
@@ -44,7 +46,9 @@ func ChangeCheatStatus(c *fiber.Ctx) error {
 func DeleteCheat(c *fiber.Ctx) error {
 	cheat := c.Params("cheat")
 
-	cheatModel := memcache.CheatCache.Get(cheat)
+	id, _ := strconv.Atoi(cheat)
+	cheatModel := memcache.CheatCache.ID(uint(id))
+
 	models.DB.Delete(&cheatModel)
 
 	memcache.CheatCache.Fetch()

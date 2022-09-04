@@ -19,3 +19,13 @@ func (c cheatModelCache) Get(Name string) models.CheatModel {
 
 	return models.CheatModel{}
 }
+
+func (c cheatModelCache) ID(Name uint) models.CheatModel {
+	for _, a := range c {
+		if a.ID == Name {
+			return a
+		}
+	}
+
+	return models.CheatModel{}
+}

@@ -161,12 +161,12 @@
                                         <td>{{.Anticheat}}</td>
                                         <td>
                                             {{ if eq .Status 1 }}
-                                            <a href="/admin/changeCheatStatus/{{.Name}}" class="btn btn-success btn-sm" type="button">Unfreeze</a>
+                                            <a href="/admin/changeCheatStatus/{{.ID}}" class="btn btn-success btn-sm" type="button">Unfreeze</a>
                                             {{ else }}
-                                            <a href="/admin/changeCheatStatus/{{.Name}}" class="btn btn-primary btn-sm" type="button">Freeze</a>
+                                            <a href="/admin/changeCheatStatus/{{.ID}}" class="btn btn-primary btn-sm" type="button">Freeze</a>
                                             {{ end }}
 
-                                            <a href="/admin/deleteCheat/{{.Name}}" class="btn btn-danger btn-sm" type="button">Delete</a>
+                                            <a href="/admin/deleteCheat/{{.ID}}" class="btn btn-danger btn-sm" type="button">Delete</a>
                                         </td>
                                     </tr>
                                     {{ end }}
