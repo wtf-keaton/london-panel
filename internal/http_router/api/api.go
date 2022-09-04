@@ -24,7 +24,7 @@ func ActivateKey(c *fiber.Ctx) error {
 
 	models.DB.Model(&keyData).Updates(map[string]interface{}{
 		"HardwareID": hwid,
-		"EndTime":    keyData.EndTime.Add(time.Duration(keyData.Hours) * time.Hour),
+		"EndTime":    keyData.EndTime.Add(time.Duration(keyData.Hours) * time.Hour * 24),
 		"Status":     1,
 	})
 
