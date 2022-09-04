@@ -4,6 +4,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/template/html"
 	"template/internal/http_router/admin"
+	"template/internal/http_router/api"
 	"template/internal/http_router/index"
 	"template/internal/http_router/middleware"
 	"template/pgk/session_manager"
@@ -33,20 +34,19 @@ func Serve() (app *fiber.App) {
 	mainGroup.Get("/users", admin.Users)
 	mainGroup.Get("/cheats", admin.Cheats)
 	mainGroup.Get("/keys", admin.Keys)
-
 	mainGroup.Post("/generateKeys", admin.GenerateKeys)
 	mainGroup.Get("/clearKeyHardware/:key", admin.ClearKeyHardwareID)
 	mainGroup.Get("/deleteKey/:key", admin.DeleteKey)
-
 	mainGroup.Post("/createCheat", admin.CreateCheat)
 	mainGroup.Get("/changeCheatStatus/:cheat", admin.ChangeCheatStatus)
 	mainGroup.Get("/deleteCheat/:cheat", admin.DeleteCheat)
-
 	mainGroup.Post("/banHardware", admin.BanHardware)
 	mainGroup.Post("/unbanHardware", admin.UnbanHardware)
-
 	mainGroup.Post("/createUser", admin.CreateUser)
 	mainGroup.Post("/deleteUser", admin.DeleteUser)
+
+	apiGroup := app.Group("/api/v1")
+	apiGroup.Post("/banHardware", api.BanHardware)
 
 	return
 }
