@@ -13,6 +13,7 @@ type KeyModel struct {
 	Cheat      string
 	Status     int
 	HardwareID string
+	Banned     bool
 
 	// Time Management
 	Hours   int

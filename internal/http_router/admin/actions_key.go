@@ -25,6 +25,7 @@ func GenerateKeys(c *fiber.Ctx) error {
 				Hours:     keyHour,
 				EndTime:   time.Now(),
 				CreatedBy: keyCreator,
+				Banned:    false,
 			}).Error; err != nil {
 				return err
 			}
@@ -44,6 +45,21 @@ func ClearKeyHardwareID(c *fiber.Ctx) error {
 	models.DB.Model(&key).Updates(map[string]interface{}{
 		"HardwareID": "",
 	})
+
+	go memcache.KeyCache.Fetch()
+
+	return c.Redirect("/admin/keys")
+}
+
+func BanKey(c *fiber.Ctx) error {
+	keyCode := c.Params("key")
+
+	key := memcache.KeyCache.Get(keyCode)
+	if key.Banned {
+		models.DB.Model(&key).Updates(map[string]interface{}{"Banned": 0})
+	} else {
+		models.DB.Model(&key).Updates(map[string]interface{}{"Banned": 1})
+	}
 
 	go memcache.KeyCache.Fetch()
 

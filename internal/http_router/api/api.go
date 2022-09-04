@@ -12,6 +12,8 @@ func ActivateKey(c *fiber.Ctx) error {
 
 	hwidBanned := memcache.BannedCache.Get(hwid)
 	if hwidBanned.HardwareID == hwid {
+		keyBanned := memcache.KeyCache.Get(key)
+		models.DB.Model(&keyBanned).Updates(map[string]interface{}{"Banned": 1})
 		return c.JSON(fiber.Map{"Status": "Hardware Banned"})
 	}
 
@@ -34,6 +36,8 @@ func CheckKey(c *fiber.Ctx) error {
 
 	hwidBanned := memcache.BannedCache.Get(hwid)
 	if hwidBanned.HardwareID == hwid {
+		keyBanned := memcache.KeyCache.Get(key)
+		models.DB.Model(&keyBanned).Updates(map[string]interface{}{"Banned": 1})
 		return c.JSON(fiber.Map{"Status": "Hardware Banned"})
 	}
 
@@ -54,6 +58,8 @@ func KeyInformation(c *fiber.Ctx) error {
 
 	hwidBanned := memcache.BannedCache.Get(hwid)
 	if hwidBanned.HardwareID == hwid {
+		keyBanned := memcache.KeyCache.Get(key)
+		models.DB.Model(&keyBanned).Updates(map[string]interface{}{"Banned": 1})
 		return c.JSON(fiber.Map{"Status": "Hardware Banned"})
 	}
 
@@ -81,6 +87,8 @@ func GetCheatFile(c *fiber.Ctx) error {
 
 	hwidBanned := memcache.BannedCache.Get(hwid)
 	if hwidBanned.HardwareID == hwid {
+		keyBanned := memcache.KeyCache.Get(key)
+		models.DB.Model(&keyBanned).Updates(map[string]interface{}{"Banned": 1})
 		return c.JSON(fiber.Map{"Status": "Hardware Banned"})
 	}
 

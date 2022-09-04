@@ -24,7 +24,14 @@ func Cheats(c *fiber.Ctx) error {
 
 func Keys(c *fiber.Ctx) error {
 	return c.Render("keys", fiber.Map{
-		"Keys":   memcache.KeyCache,
+		"Keys":   memcache.KeyCache.NotBanned(),
+		"Cheats": memcache.CheatCache,
+	})
+}
+
+func KeysBanned(c *fiber.Ctx) error {
+	return c.Render("keys-banned", fiber.Map{
+		"Keys":   memcache.KeyCache.Banned(),
 		"Cheats": memcache.CheatCache,
 	})
 }
