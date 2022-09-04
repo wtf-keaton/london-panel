@@ -24,7 +24,7 @@ func CreateUser(c *fiber.Ctx) error {
 func DeleteUser(c *fiber.Ctx) error {
 	user := c.Params("user")
 
-	userModel := memcache.CheatCache.Get(user)
+	userModel := memcache.UserCache.Get(user)
 	models.DB.Delete(&userModel)
 
 	go memcache.UserCache.Fetch()
