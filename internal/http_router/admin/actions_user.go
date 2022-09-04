@@ -9,12 +9,14 @@ import (
 )
 
 func CreateUser(c *fiber.Ctx) error {
-	models.DB.Create(&models.UserModel{
+	models.DB.Debug().Create(&models.UserModel{
 		Model:    gorm.Model{},
 		Username: c.FormValue("username"),
 		Password: c.FormValue("password"),
 		Status:   c.FormValue("status"),
 	})
+
+	go memcache.UserCache.Fetch()
 
 	return c.Redirect("/admin/users")
 }
@@ -24,6 +26,8 @@ func DeleteUser(c *fiber.Ctx) error {
 
 	userModel := memcache.CheatCache.Get(user)
 	models.DB.Delete(&userModel)
+
+	go memcache.UserCache.Fetch()
 
 	return c.Redirect("/admin/users")
 }
