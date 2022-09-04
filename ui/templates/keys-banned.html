@@ -66,10 +66,12 @@
                         Overview
                     </a>
 
+                    {{ if eq .User.Status "admin" }}
                     <a class="nav-link" href="/admin/cheats">
                         <div class="nav-link-icon"><i class="material-icons">shopping_cart</i></div>
                         Cheats
                     </a>
+                    {{ end }}
 
                     <a class="nav-link" href="/admin/keys">
                         <div class="nav-link-icon"><i class="material-icons">vpn_key</i></div>
@@ -81,6 +83,7 @@
                         Keys Banned
                     </a>
 
+                    {{ if eq .User.Status "admin" }}
                     <a class="nav-link" href="/admin/banned_hwids">
                         <div class="nav-link-icon"><i class="material-icons">desktop_windows</i></div>
                         Banned HWIDs
@@ -90,6 +93,7 @@
                         <div class="nav-link-icon"><i class="material-icons">group_add</i></div>
                         Admins
                     </a>
+                    {{ end }}
                 </div>
             </div>
             <!-- Drawer footer        -->

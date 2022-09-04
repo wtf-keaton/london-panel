@@ -16,23 +16,16 @@ func CreateUser(c *fiber.Ctx) error {
 		Status:   c.FormValue("status"),
 	})
 
-	return c.JSON(fiber.Map{"Status": "OK"})
+	return c.Redirect("/admin/users")
 }
 
 func DeleteUser(c *fiber.Ctx) error {
-	user := c.FormValue("user")
-	if len(user) == 0 {
-		return c.JSON(fiber.Map{"Status": "Error"})
-	}
+	user := c.Params("user")
 
 	userModel := memcache.CheatCache.Get(user)
-	if userModel.Name != user {
-		return c.JSON(fiber.Map{"Status": "Error"})
-	}
-
 	models.DB.Delete(&userModel)
 
-	return c.JSON(fiber.Map{"Status": "OK"})
+	return c.Redirect("/admin/users")
 }
 
 func LoginIn(c *fiber.Ctx) error {

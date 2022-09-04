@@ -10,5 +10,9 @@ func AuthCheck(c *fiber.Ctx) error {
 		return c.Next()
 	}
 
+	if session_manager.GetUser(c).Username == "" {
+		return c.Redirect("/")
+	}
+
 	return c.Render("auth", fiber.Map{})
 }

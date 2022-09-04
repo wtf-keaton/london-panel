@@ -1,8 +1,6 @@
 package models
 
 import (
-	"encoding/json"
-	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
 
@@ -16,12 +14,4 @@ type UserModel struct {
 	Username string `gorm:"unique"`
 	Password string
 	Status   string
-
-	Cheats    datatypes.JSON
-	CheatList CheatList `gorm:"-"`
-}
-
-func (u *UserModel) AfterFind(tx *gorm.DB) (err error) {
-	json.Unmarshal(u.Cheats, &u.CheatList)
-	return
 }
