@@ -7,34 +7,23 @@ import (
 )
 
 func BanHardware(c *fiber.Ctx) error {
-	err := models.DB.Create(&models.BannedHardware{
+	models.DB.Create(&models.BannedHardware{
 		HardwareID: c.FormValue("hardware"),
 		Reason:     c.FormValue("reason"),
-	}).Error
-
-	if err != nil {
-		return c.JSON(fiber.Map{"Status": "Error"})
-	}
+	})
 
 	go memcache.BannedCache.Fetch()
 
-	return c.JSON(fiber.Map{"Status": "OK"})
+	return c.Redirect("/admin/banned_hwids")
 }
 
 func UnbanHardware(c *fiber.Ctx) error {
-	hardware := c.FormValue("hardware")
-	if len(hardware) == 0 {
-		return c.JSON(fiber.Map{"Status": "Error"})
-	}
+	hardware := c.Params("hardware")
 
-	hwid := memcache.KeyCache.Get(hardware)
-	if hwid.Keycode != hardware {
-		return c.JSON(fiber.Map{"Status": "Error"})
-	}
-
-	models.DB.Delete(&hwid)
+	hwid := memcache.BannedCache.Get(hardware)
+	models.DB.Delete(&hwid, "`hardware_id` = ?", hardware)
 
 	go memcache.BannedCache.Fetch()
 
-	return c.JSON(fiber.Map{"Status": "OK"})
+	return c.Redirect("/admin/banned_hwids")
 }

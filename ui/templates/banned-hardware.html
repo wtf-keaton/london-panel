@@ -1,0 +1,214 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <meta name="description" content=""/>
+    <meta name="author" content=""/>
+    <title>Login</title>
+
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Two+Tone|Material+Icons+Round|Material+Icons+Sharp"
+          rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,500" rel="stylesheet"/>
+
+    <link href="/assets/styles.css" rel="stylesheet"/>
+    <link href="/assets/css.css" rel="stylesheet"/>
+    <link href="/assets/css1.css" rel="stylesheet"/>
+    <link href="/assets/css2.css" rel="stylesheet"/>
+
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+
+</head>
+<body class="nav-fixed bg-dark">
+<!-- Top app bar navigation menu-->
+<nav class="top-app-bar navbar navbar-expand navbar-dark bg-dark">
+    <div class="container-fluid px-4">
+        <!-- Drawer toggle button-->
+        <button class="btn btn-lg btn-icon order-1 order-lg-0" id="drawerToggle" href="javascript:void(0);"><i
+                class="material-icons">menu</i></button>
+        <!-- Navbar brand-->
+        <a class="navbar-brand me-auto" href="index.html">
+            <div class="text-uppercase font-monospace">OpenAim</div>
+        </a>
+        <!-- Navbar items-->
+        <div class="d-flex align-items-center mx-3 me-lg-0">
+            <!-- Navbar buttons-->
+            <div class="d-flex">
+                <!-- User profile dropdown-->
+                <div class="dropdown">
+                    <button class="btn btn-lg btn-icon dropdown-toggle" id="dropdownMenuProfile" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false"><i class="material-icons">person</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<!-- Layout wrapper-->
+<div id="layoutDrawer">
+    <!-- Layout navigation-->
+    <div id="layoutDrawer_nav">
+        <!-- Drawer navigation-->
+        <nav class="drawer accordion drawer-dark bg-dark" id="drawerAccordion">
+            <div class="drawer-menu">
+                <div class="nav">
+                    <!-- Divider-->
+                    <div class="drawer-menu-divider d-sm-none"></div>
+                    <!-- Drawer section heading (Interface)-->
+                    <div class="drawer-menu-heading">Interface</div>
+                    <!-- Drawer link (Overview)-->
+                    <a class="nav-link" href="/admin">
+                        <div class="nav-link-icon"><i class="material-icons">language</i></div>
+                        Overview
+                    </a>
+
+                    {{ if eq .User.Status "admin" }}
+                    <a class="nav-link" href="/admin/cheats">
+                        <div class="nav-link-icon"><i class="material-icons">shopping_cart</i></div>
+                        Cheats
+                    </a>
+                    {{ end }}
+
+                    <a class="nav-link" href="/admin/keys">
+                        <div class="nav-link-icon"><i class="material-icons">vpn_key</i></div>
+                        Keys
+                    </a>
+
+                    <a class="nav-link" href="/admin/keys/banned">
+                        <div class="nav-link-icon"><i class="material-icons">key_off</i></div>
+                        Keys Banned
+                    </a>
+
+                    {{ if eq .User.Status "admin" }}
+                    <a class="nav-link" href="/admin/banned_hwids">
+                        <div class="nav-link-icon"><i class="material-icons">desktop_windows</i></div>
+                        Banned HWIDs
+                    </a>
+
+                    <a class="nav-link" href="/admin/users">
+                        <div class="nav-link-icon"><i class="material-icons">group_add</i></div>
+                        Admins
+                    </a>
+                    {{ end }}
+                </div>
+            </div>
+            <!-- Drawer footer        -->
+            <div class="drawer-footer border-top">
+                <div class="d-flex align-items-center">
+                    <i class="material-icons text-muted">account_circle</i>
+                    <div class="ms-3">
+                        <div class="caption">Logged in as:</div>
+                        <div class="small fw-500">{{.User.Username}}</div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- Layout content-->
+    <div id="layoutDrawer_content">
+        <!-- Main page content-->
+        <main>
+            <!-- Main dashboard content-->
+            <div class="container-xl p-5">
+                <div class="row justify-content-between align-items-center mb-5">
+                    <div class="col flex-shrink-0 mb-5 mb-md-0">
+                        <h1 class="display-4 text-white mb-0">Banned Hardware</h1>
+                    </div>
+                    <div class="col-12 col-md-auto">
+                        <button class="btn btn-raised-primary" type="button" data-bs-toggle="modal"
+                                data-bs-target="#exampleModalCentered">Add New
+                        </button>
+                    </div>
+                </div>
+                <div class="card card-raised">
+                    <div class="card-header bg-primary text-white px-4">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="me-4">
+                                <h2 class="card-title text-white mb-0">Banned Hardware</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <!-- Simple DataTables example-->
+                                <table id="datatablesSimple">
+                                    <thead>
+                                    <tr>
+                                        <th data-sortable="" style="width: 20%;">
+                                            <a href="#" class="dataTable-sorter">HWID</a>
+                                        </th>
+                                        <th data-sortable="" style="width: 10%;">
+                                            <a href="#" class="dataTable-sorter">Reason</a>
+                                        </th>
+                                        <th data-sortable="" style="width: 20%;">
+                                            <a href="#" class="dataTable-sorter">Actions</a>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {{ range .Hardwares }}
+                                    <tr>
+                                        <td>{{.HardwareID}}</td>
+                                        <td>{{.Reason}}</td>
+                                        <td>
+                                            <a href="/admin/unbanHardware/{{.HardwareID}}" class="btn btn-primary btn-sm" type="button">Unban</a>
+                                        </td>
+                                    </tr>
+                                    {{ end }}
+                                    </tbody>
+                                </table>
+                            </div>
+                </div>
+            </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModalCentered" tabindex="-1" aria-labelledby="exampleModalCenteredLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" method="post" action="/admin/banHardware">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenteredLabel">Ban Hardware</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label class="form-label">HWID</label>
+                <input class="form-control mb-3" name="hardware">
+
+                <label class="form-label">Reason</label>
+                <input class="form-control mb-3" name="reason">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-text-primary" type="submit">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const datatablesSimple = document.getElementById('datatablesSimple');
+
+    if (datatablesSimple) {
+        new simpleDatatables.DataTable(datatablesSimple, {
+            header: true,
+            hiddenHeader: true,
+            footer: false,
+            perPage: 30,
+            paging: true,
+            perPageSelect: [10, 30, 100],
+        });
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+<script type="module" src="/assets/material.js"></script>
+<script src="/assets/scripts.js"></script>
+
+</body>
+</html>

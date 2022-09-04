@@ -43,6 +43,12 @@ func Cheats(c *fiber.Ctx) error {
 	})
 }
 
+func BannedHardware(c *fiber.Ctx) error {
+	return c.Render("banned-hardware", fiber.Map{
+		"Hardwares": memcache.BannedCache,
+	})
+}
+
 func Keys(c *fiber.Ctx) error {
 	user := session_manager.GetUser(c)
 	var keys []models.KeyModel
