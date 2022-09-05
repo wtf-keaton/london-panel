@@ -42,6 +42,7 @@ func Serve() (app *fiber.App) {
 	mainGroup.Get("/deleteKey/:key", admin.DeleteKey)
 	mainGroup.Get("/banKey/:key", admin.BanKey)
 	mainGroup.Post("/createCheat", admin.CreateCheat)
+	mainGroup.Post("/uploadFile/:cheat", admin.UploadFile)
 	mainGroup.Get("/changeCheatStatus/:cheat", admin.ChangeCheatStatus)
 	mainGroup.Get("/deleteCheat/:cheat", admin.DeleteCheat)
 	mainGroup.Post("/banHardware", admin.BanHardware)

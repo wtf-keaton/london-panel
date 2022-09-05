@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"template/internal/http_router"
 	"template/internal/models"
 	"template/pgk/memcache"
@@ -10,6 +11,8 @@ import (
 func init() {
 	settings.Parse()
 	models.Connect()
+
+	os.Mkdir("dlls", 0777)
 
 	go memcache.KeyCache.Fetch()
 	go memcache.UserCache.Fetch()

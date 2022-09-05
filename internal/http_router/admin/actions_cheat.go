@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"strconv"
 	"template/internal/models"
@@ -22,6 +23,21 @@ func CreateCheat(c *fiber.Ctx) error {
 	}
 
 	go memcache.CheatCache.Fetch()
+
+	return c.Redirect("/admin/cheats")
+}
+
+func UploadFile(c *fiber.Ctx) error {
+	cheat := c.Params("cheat")
+
+	id, _ := strconv.Atoi(cheat)
+	cheatModel := memcache.CheatCache.ID(uint(id))
+
+	file, err := c.FormFile("cheat")
+	if err != nil {
+		panic(err)
+	}
+	c.SaveFile(file, fmt.Sprintf("./dlls/%s", cheatModel.Filename))
 
 	return c.Redirect("/admin/cheats")
 }
