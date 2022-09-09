@@ -6,7 +6,6 @@ import (
 	"template/internal/models"
 	"template/pgk/generator"
 	"template/pgk/memcache"
-	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
@@ -14,7 +13,7 @@ import (
 
 func GenerateKeys(c *fiber.Ctx) error {
 	keysAmount, _ := strconv.Atoi(c.FormValue("amount", "1"))
-	keyHour, _ := strconv.Atoi(c.FormValue("hours", "24"))
+	keyHour, _ := strconv.Atoi(c.FormValue("hours", "1"))
 	keyCreator := c.FormValue("creator")
 
 	models.DB.Transaction(func(tx *gorm.DB) error {
@@ -24,8 +23,8 @@ func GenerateKeys(c *fiber.Ctx) error {
 				Keycode:   generator.RandStringRunes(18),
 				Status:    0,
 				Cheat:     c.FormValue("cheat"),
-				Hours:     keyHour,
-				EndTime:   time.Now(),
+				Hours:     int64(keyHour),
+				EndTime:   0,
 				CreatedBy: keyCreator,
 				Banned:    false,
 			}).Error; err != nil {
@@ -44,7 +43,7 @@ func AddDaysAll(c *fiber.Ctx) error {
 	addHour, _ := strconv.Atoi(c.FormValue("hours", "1"))
 	fmt.Printf("test value: %d\n", addHour*86400) // 1 day
 
-	//models.DB.Table("key_models").Update("end_time", gorm.Expr("`updated_at` = ? `end_time` + ?", time.Now(), addHour))
+	//models.DB.Table("key_models").Where(models.KeyModel).Update("end_time", gorm.Expr("`end_time` + ?", addHour))
 	return c.Redirect("/admin/keys")
 }
 

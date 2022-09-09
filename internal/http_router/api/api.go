@@ -25,9 +25,11 @@ func ActivateKey(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{"Status": "Already Activated"})
 	}
 
+	currentTime := time.Now().Unix()
+
 	models.DB.Model(&keyData).Updates(map[string]interface{}{
 		"HardwareID": hwid,
-		"EndTime":    keyData.EndTime.Add(time.Duration(keyData.Hours) * time.Hour * 24),
+		"EndTime":    currentTime + keyData.Hours*86400,
 		"Status":     1,
 	})
 
@@ -59,7 +61,7 @@ func CheckKey(c *fiber.Ctx) error {
 
 	}
 
-	if keyData.EndTime.Unix() < time.Now().Unix() {
+	if keyData.EndTime < time.Now().Unix() {
 		models.DB.Model(&keyData).Updates(map[string]interface{}{"Status": 2})
 
 		go memcache.KeyCache.Fetch()
@@ -94,11 +96,13 @@ func KeyInformation(c *fiber.Ctx) error {
 
 	cheatData := memcache.CheatCache.Get(keyData.Cheat)
 
+	endDate := time.Unix(keyData.EndTime, 0)
+
 	return c.JSON(fiber.Map{
 		"Frozen":       cheatData.Status == 1,
 		"AntiCheat":    cheatData.Anticheat,
 		"Process":      cheatData.Process,
-		"Subscription": keyData.EndTime.Format(""),
+		"Subscription": endDate.Format("2 January 2006 15:04"),
 	})
 }
 
@@ -123,7 +127,7 @@ func GetCheatFile(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{"Status": "Wrong HWID"})
 	}
 
-	if keyData.EndTime.Unix() < time.Now().Unix() {
+	if keyData.EndTime < time.Now().Unix() {
 		models.DB.Model(&keyData).Updates(map[string]interface{}{"Status": 2})
 
 		go memcache.KeyCache.Fetch()
@@ -157,7 +161,7 @@ func GetDriverFile(c *fiber.Ctx) error {
 		return c.JSON(fiber.Map{"Status": "Wrong HWID"})
 	}
 
-	if keyData.EndTime.Unix() < time.Now().Unix() {
+	if keyData.EndTime < time.Now().Unix() {
 		models.DB.Model(&keyData).Updates(map[string]interface{}{"Status": 2})
 
 		go memcache.KeyCache.Fetch()
