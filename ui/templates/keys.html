@@ -120,6 +120,11 @@
                     </div>
                     <div class="col-12 col-md-auto">
                         <button class="btn btn-raised-primary" type="button" data-bs-toggle="modal"
+                                data-bs-target="#addDaysAll">Add Time
+                        </button>
+                    </div>
+                    <div class="col-12 col-md-auto">
+                        <button class="btn btn-raised-primary" type="button" data-bs-toggle="modal"
                                 data-bs-target="#exampleModalCentered">Add New
                         </button>
                     </div>
@@ -166,8 +171,10 @@
                                         <td>
                                             {{ if eq .Status 0 }}
                                                 Inactive
-                                            {{ else }}
+                                            {{ else if eq .Status 1 }}
                                                 {{.EndTime.Format "02/01/2006 15:04"}}
+                                            {{ else }}
+                                                Expired
                                             {{ end }}
                                         </td>
                                         <td>
@@ -225,6 +232,33 @@
     </div>
 </div>
 
+<div class="modal fade" id="addDaysAll" tabindex="-1" aria-labelledby="addDaysAllLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content" method="post" action="/admin/addDays">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addDaysAllLabel">Add days for keys</h5>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label class="form-label">Days</label>
+                <input class="form-control mb-3" name="hours">
+
+                <label class="form-label">Cheat</label>
+                <select class="form-select" aria-label="Default select example" name="cheat">
+                    {{ range .Cheats }}
+                    <option value="{{.Name}}">{{.Name}}</option>
+                    {{ end }}
+                </select>
+
+                <input class="form-control mb-3" type="hidden" name="creator" value="{{.User.Username}}">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-text-primary" type="submit">Add days</button>
+            </div>
+        </form>
+    </div>
+</div>
 <script>
     const datatablesSimple = document.getElementById('datatablesSimple');
 

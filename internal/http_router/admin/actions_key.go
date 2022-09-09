@@ -1,13 +1,15 @@
 package admin
 
 import (
-	"github.com/gofiber/fiber/v2"
-	"gorm.io/gorm"
+	"fmt"
 	"strconv"
 	"template/internal/models"
 	"template/pgk/generator"
 	"template/pgk/memcache"
 	"time"
+
+	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 func GenerateKeys(c *fiber.Ctx) error {
@@ -35,6 +37,14 @@ func GenerateKeys(c *fiber.Ctx) error {
 
 	go memcache.KeyCache.Fetch()
 
+	return c.Redirect("/admin/keys")
+}
+
+func AddDaysAll(c *fiber.Ctx) error {
+	addHour, _ := strconv.Atoi(c.FormValue("hours", "1"))
+	fmt.Printf("test value: %d\n", addHour*86400) // 1 day
+
+	//models.DB.Table("key_models").Update("end_time", gorm.Expr("`updated_at` = ? `end_time` + ?", time.Now(), addHour))
 	return c.Redirect("/admin/keys")
 }
 

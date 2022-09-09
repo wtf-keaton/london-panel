@@ -1,13 +1,14 @@
 package http_router
 
 import (
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/template/html"
 	"template/internal/http_router/admin"
 	"template/internal/http_router/api"
 	"template/internal/http_router/index"
 	"template/internal/http_router/middleware"
 	"template/pgk/session_manager"
+
+	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html"
 )
 
 func Serve() (app *fiber.App) {
@@ -38,6 +39,7 @@ func Serve() (app *fiber.App) {
 	mainGroup.Get("/banned_hwids", admin.BannedHardware)
 
 	mainGroup.Post("/generateKeys", admin.GenerateKeys)
+	mainGroup.Post("/addDays", admin.AddDaysAll)
 	mainGroup.Get("/clearKeyHardware/:key", admin.ClearKeyHardwareID)
 	mainGroup.Get("/deleteKey/:key", admin.DeleteKey)
 	mainGroup.Get("/banKey/:key", admin.BanKey)
@@ -52,7 +54,8 @@ func Serve() (app *fiber.App) {
 
 	apiGroup := app.Group("/api/v1")
 	apiGroup.Post("/checkKey", api.CheckKey)
-	apiGroup.Post("/getFile", api.GetCheatFile)
+	apiGroup.Post("/getDll", api.GetCheatFile)
+	apiGroup.Post("/getDriver", api.GetDriverFile)
 	apiGroup.Post("/activateKey", api.ActivateKey)
 	apiGroup.Post("/banHardware", api.BanHardware)
 	apiGroup.Post("/keyInformation", api.KeyInformation)
