@@ -2,7 +2,6 @@ package models
 
 import (
 	"gorm.io/gorm"
-	"time"
 )
 
 type KeyModel struct {
@@ -16,8 +15,8 @@ type KeyModel struct {
 	Banned     bool
 
 	// Time Management
-	Hours   int
-	EndTime time.Time
+	Hours   int64
+	EndTime int64
 
 	// User information
 	CreatedBy string
