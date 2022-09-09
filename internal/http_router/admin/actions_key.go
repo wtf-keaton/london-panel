@@ -16,6 +16,8 @@ func GenerateKeys(c *fiber.Ctx) error {
 	keyHour, _ := strconv.Atoi(c.FormValue("hours", "1"))
 	keyCreator := c.FormValue("creator")
 
+	fmt.Printf("cheat: %s\n", c.FormValue("cheat"))
+
 	models.DB.Transaction(func(tx *gorm.DB) error {
 		for i := 0; i < keysAmount; i++ {
 			if err := tx.Create(&models.KeyModel{
@@ -43,7 +45,9 @@ func AddDaysAll(c *fiber.Ctx) error {
 	addHour, _ := strconv.Atoi(c.FormValue("hours", "1"))
 	fmt.Printf("test value: %d\n", addHour*86400) // 1 day
 
-	//models.DB.Table("key_models").Where(models.KeyModel).Update("end_time", gorm.Expr("`end_time` + ?", addHour))
+	models.DB.Table("key_models").Where("status = ? AND cheat = ?", 1, c.FormValue("cheat")).Update("end_time", gorm.Expr("`end_time` + ?", addHour*86400))
+	go memcache.KeyCache.Fetch()
+
 	return c.Redirect("/admin/keys")
 }
 
